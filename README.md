@@ -1,51 +1,95 @@
-# 🎬 Rubber Hose Animation Skill (`rubber-hose-dance`)
+<div align="center">
 
-Skill portátil para agentes de código (Antigravity, Claude Code, Cursor, etc.) que convierte **cualquier historia, dato curioso o baile** en un video animado estilo **caricatura *rubber hose* de los años 30** en **Remotion** (`24 fps`, `9:16` o `16:9`), 100% por código y determinista.
+# 🎬 Rubber Hose Animation Skill
 
-## ✨ Qué incluye
-- **Escenas dinámicas cada 3–5 segundos:** transiciones clásicas (*Iris Wipe*, barridos, cortes al pulso), **cero diapositivas**.
-- **Animación *"on twos"* (12 fps) + cámara en 3 planos con *parallax*:** personajes clásicos con línea que "hierve" sobre fondos, autos y cámaras suaves a 24 fps (`CameraRig.tsx`, `beat.ts`).
-- **Creador modular de personajes y vehículos:** sombreros, vestuarios, instrumentos/props, expresiones, autos vintage con ojos cartoon (`ModularCharacter.tsx`, `SalsaCast.tsx`, `RubberHoseCharacter.tsx`).
-- **Look de película vintage 1930:** grano, rayones, polvo, parpadeo de proyector, sepia y viñeta (`VintageFilm.tsx`).
-- **Voz clonada con ElevenLabs API v4 (`eleven_v4` únicamente):** flujo obligatorio en 2 fases (propone guion y costo antes de gastar créditos) + audio tags oficiales + limpieza automática de subtítulos.
-- **Audio *ducking* automático + música procedural sin copyright + `earshot`:** música generada en Node.js puro (`generate-ragtime.mjs`, `generate-salsa.mjs`) con sincronización por `beats.json`, SFX procedurales (`earshot-sfx.mjs`) y control de calidad acústica (`earshot-measure.mjs`).
-- **Exportación automática de `.srt` + zonas seguras de Reels/TikTok/Shorts:** subtítulos estables sin cambios de tamaño (`VintageCaptions.tsx`) y archivo `.srt` listo para YouTube/TikTok/CapCut (`captions-to-srt.mjs`).
+**Turn any story, trivia, or dance prompt into a 1930s rubber-hose cartoon video — 100% code-driven in Remotion, zero image/video AI APIs, copyright-free procedural music & SFX, and ElevenLabs v4 voice cloning.**
 
----
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Remotion](https://img.shields.io/badge/Remotion-24fps%20Deterministic-0B84F3)](https://remotion.dev)
+[![ElevenLabs v4](https://img.shields.io/badge/ElevenLabs-API%20v4%20Only-111111)](https://elevenlabs.io)
+[![Audio QC](https://img.shields.io/badge/Audio%20SFX%20%26%20QC-earshot-54a868)](https://github.com/Leonxlnx/earshot)
+[![Zero Image APIs](https://img.shields.io/badge/Image%2FVideo%20APIs-%240.00-brightgreen)](#)
 
-## 📦 Instalación rápida
+*Compatible with Antigravity, Claude Code, Cursor, and any agent supporting `SKILL.md`.*
 
-1. Clona este repositorio en tu carpeta de skills:
-   ```bash
-   git clone https://github.com/CRLeguizamon/rubberhose-animation-skill.git ~/.gemini/config/skills/rubber-hose-dance
-   ```
-   *(En Windows PowerShell: `C:\Users\<TU_USUARIO>\.gemini\config\skills\rubber-hose-dance`, o en `.claude/skills/rubber-hose-dance` si usas Claude Code).*
-
-2. Sigue el tutorial paso a paso en **[SETUP.md](SETUP.md)** para configurar:
-   - Tu voz clonada y API Key de **ElevenLabs v4** en `.env` (a partir de `assets/template/.env.example`).
-   - **`earshot`** (para SFX procedurales y medición de audio).
-   - Tu proyecto base en **Remotion**.
+</div>
 
 ---
 
-## 📂 Estructura del repositorio
-```text
-├── SKILL.md                          # Instrucciones y reglas completas de la skill
-├── SETUP.md                          # Tutorial paso a paso (ElevenLabs v4 + earshot + Remotion)
-├── assets/template/
-│   ├── .env.example                  # Plantilla segura de variables de entorno
-│   └── src/
-│       ├── DanceBombin.tsx           # Plantilla de baile rítmico
-│       ├── SalsaCortoVoz.tsx         # Plantilla multi-escena narrada con ducking, parallax y SFX
-│       └── rubber-hose/              # Motor (beat, audioDucking, CameraRig, ModularCharacter, etc.)
-└── scripts/
-    ├── generate-voice.mjs            # ElevenLabs API v4 + captions.json + .srt
-    ├── captions-to-srt.mjs           # Conversor a formato .srt estándar
-    ├── generate-ragtime.mjs          # Música procedural ragtime/foxtrot 1930 + beats.json
-    ├── generate-salsa.mjs            # Música procedural salsa/montuno vintage + beats.json
-    ├── earshot-sfx.mjs               # Generador de SFX con earshot (922 sonidos, sin red)
-    └── earshot-measure.mjs           # Medidor de calidad de audio (LUFS, true peak, espectro)
+## ✨ Why this skill?
+
+Generating vintage cartoons with video diffusion models is expensive, inconsistent, and hard to sync to beats or scripts. **Rubber Hose Animation Skill** renders everything deterministically in code:
+
+- 🎞️ **Dynamic multi-scene storytelling (every 3–5 s):** continuous cartoon cuts (*Iris Wipe*, whip pans, beat-synced transitions) — **zero static slides**.
+- 🕺 **Authentic 1930s craft:** characters animated **"on twos" (12 fps)** with bendy rubber-hose limbs, pie-cut eyes, line boil (`feTurbulence`), projector gate weave, film grain, scratches & sepia vignette over smooth **24 fps** 3-plane parallax cameras (`CameraRig`).
+- 🎭 **Modular cast & props generator:** mix hats, outfits, instruments, expressions, animated vintage cars, skylines, palm trees, or generate any custom SVG element on the fly (`ModularCharacter.tsx`).
+- 🎹 **\$0.00 copyright-free procedural music + `earshot` SFX:** pure Node.js procedural ragtime/foxtrot and vintage salsa/montuno synths with automatic `beats.json`, procedural foley SFX via [`earshot`](https://github.com/Leonxlnx/earshot) (922 sounds, offline), and acoustic QC (`LUFS` / true peak).
+- 🎙️ **ElevenLabs API v4 (`eleven_v4`) + automatic audio ducking:** strict 2-phase workflow (script + cost approval *before* spending a single credit), cloned voice support, official v4 `[audio tags]`, automatic music ducking while speaking, and **`.srt` export**.
+- 📱 **Social-ready safe zones:** built-in `9:16` safe zone (`Reels / TikTok / YouTube Shorts`), no progress bars, fixed-size color-only caption highlights, and `16:9` support.
+
+---
+
+## ⚡ Quick Install
+
+### 1. Clone into your agent's skills folder
+
+```bash
+# Antigravity (macOS / Linux)
+git clone https://github.com/CRLeguizamon/rubberhose-animation-skill.git ~/.gemini/config/skills/rubber-hose-dance
+
+# Antigravity (Windows PowerShell)
+git clone https://github.com/CRLeguizamon/rubberhose-animation-skill.git "$env:USERPROFILE\.gemini\config\skills\rubber-hose-dance"
+
+# Claude Code
+git clone https://github.com/CRLeguizamon/rubberhose-animation-skill.git ~/.claude/skills/rubber-hose-dance
 ```
 
-## 🔒 Seguridad
-Este repositorio **no incluye credenciales, API keys ni archivos `.env`**. Cada usuario configura sus propias claves localmente siguiendo [SETUP.md](SETUP.md).
+### 2. Follow the 5-minute setup guide
+Read **[SETUP.md](SETUP.md)** for the step-by-step walkthrough:
+1. Clone your voice & create an **ElevenLabs API v4** key (`.env` from `assets/template/.env.example`).
+2. Install **`earshot`** for offline procedural SFX and loudness measurement.
+3. Scaffold your Remotion studio and run your first prompt.
+
+---
+
+## 💬 Example Prompt
+
+Once installed, just ask your coding agent:
+
+> *"Use `rubber-hose-dance` to create a 20-second 9:16 story about how salsa music was born in the Caribbean and exploded in 1970s New York, with animated vintage cars, changing characters, Iris Wipe transitions, procedural salsa music, ElevenLabs v4 voiceover, and an `.srt` file."*
+
+The agent will **always propose the script, 3–5 s scene storyboard, and ElevenLabs cost estimate first** before spending any credits.
+
+---
+
+## 📂 Repository Structure
+
+```text
+├── SKILL.md                          # Core agent instructions & production rules
+├── SETUP.md                          # Step-by-step tutorial (ElevenLabs v4 + earshot + Remotion)
+├── LICENSE                           # MIT License
+├── assets/template/
+│   ├── .env.example                  # Safe environment template (no secrets shipped)
+│   └── src/
+│       ├── DanceBombin.tsx           # Beat-synced 1930s ragtime dance template
+│       ├── SalsaCortoVoz.tsx         # Multi-scene narrated template (ducking + parallax + SFX)
+│       └── rubber-hose/              # Engine (beat/onTwos, audioDucking, CameraRig, ModularCharacter, VintageFilm, VintageCaptions)
+└── scripts/
+    ├── generate-voice.mjs            # ElevenLabs API v4 + clean captions.json + .srt export
+    ├── captions-to-srt.mjs           # Standalone captions.json -> .srt converter
+    ├── generate-ragtime.mjs          # Procedural 1930s ragtime/foxtrot synth + beats.json
+    ├── generate-salsa.mjs            # Procedural vintage salsa/montuno synth + beats.json
+    ├── earshot-sfx.mjs               # Offline procedural SFX wrapper (earshot make)
+    └── earshot-measure.mjs           # Acoustic QC wrapper (LUFS, true peak, spectrum)
+```
+
+---
+
+## 🔒 Security & Privacy
+This repository contains **zero credentials, zero API keys, and zero `.env` files**. Every user configures their own keys locally following [SETUP.md](SETUP.md).
+
+## ⭐ Support
+If this skill saved you hours or helped you create viral retro cartoons for pennies, **drop a ⭐ Star on the repo** and share what you build!
+
+## 📄 License
+Licensed under the [MIT License](LICENSE).
