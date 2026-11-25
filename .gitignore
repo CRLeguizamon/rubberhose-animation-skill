@@ -1,0 +1,25 @@
+# Credenciales y entorno (NUNCA subir claves reales)
+.env
+.env.*
+!.env.example
+
+# Dependencias y entornos virtuales
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# Salidas de video y audio generados
+out/
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.srt
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
